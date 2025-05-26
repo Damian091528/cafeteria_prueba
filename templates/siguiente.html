@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Pedido - Cafetería ITSE</title>
+  <link rel="icon" type="image/png" href="https://www.itse.ac.pa/oirh/assets/img/logo.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+    .search-container input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-container button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .profile-icon {
+      font-size: 20px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .role {
+      font-size: 18px;
+      color: #f26522;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .ticket {
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 0 auto;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      width: 200px;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .qr-code {
+      margin: 20px 0;
+    }
+
+    #qrcode {
+      display: inline-block;
+    }
+
+    .pickup-code {
+      font-size: 16px;
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    .read-more {
+      margin-top: 20px;
+    }
+
+    .read-more button {
+      background-color: #000;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-icon">☰</div>
+    <div class="search-container">
+      <input type="text" placeholder="Buscar">
+      <button>🔍</button>
+    </div>
+    <div class="profile-icon">👤</div>
+  </header>
+
+  <main>
+    <h1 class="title">Cafetería</h1>
+    <h2 id="userRole" class="role"></h2>
+
+    <div class="ticket">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/ITSE_Logo.png" alt="ITSE Logo" class="logo" onerror="this.src='https://via.placeholder.com/200x100?text=ITSE+Logo';">
+      <p class="message">Hola correoitse@itse.ac.pa!!</p>
+      <p class="message">A continuación verás el detalle de tu compra número #<span id="orderNumber">155B415</span></p>
+      <div class="qr-code">
+        <div id="qrcode"></div>
+      </div>
+      <p class="pickup-code">Código de Retiro: <span id="pickupCode">WXSLPX</span></p>
+    </div>
+
+    <div class="read-more">
+      <button onclick="location.href='menu.html'">Volver al Menú</button>
+    </div>
+  </main>
+
+  <!-- Librería para generar el código QR -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+  <script>
+    // Datos de todos los ítems posibles
+    const itemsData = {
+      "sopa": { name: "Sopa", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "arroz-pollo": { name: "Arroz y Pollo", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "dulce": { name: "Dulce", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "gelatina": { name: "Gelatina", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "sopa-domingo": { name: "Sopa de Domingo", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "pollo-asado": { name: "Pollo Asado", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "flan": { name: "Flan", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "helado": { name: "Helado", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "ensalada": { name: "Ensalada Fresca", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "pescado": { name: "Pescado Frito", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "tarta": { name: "Tarta de Frutas", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "yogur": { name: "Yogur", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "crema-verduras": { name: "Crema de Verduras", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "carne-asada": { name: "Carne Asada", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "pastel": { name: "Pastel de Chocolate", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "fruta": { name: "Fruta Fresca", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "sopa-jueves": { name: "Sopa de Jueves", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "pollo-guisado": { name: "Pollo Guisado", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "arroz-leche": { name: "Arroz con Leche", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "jugo": { name: "Jugo Natural", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "caldo": { name: "Caldo de Pollo", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "pescado-viernes": { name: "Pescado al Vapor", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "helado-viernes": { name: "Helado de Vainilla", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "ensalada-frutas": { name: "Ensalada de Frutas", img: "https://i.imgur.com/CfbLoDh.jpg" },
+      "sopa-sabado": { name: "Sopa de Sábado", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "carne-sabado": { name: "Carne Guisada", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "tarta-sabado": { name: "Tarta de Limón", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "yogur-sabado": { name: "Yogur con Fruta", img: "https://i.imgur.com/CfbLoDh.jpg" }
+    };
+
+    // Obtener el rol del usuario desde sessionStorage
+    const userRole = sessionStorage.getItem("userRole") || "Invitado";
+    const userRoleDisplay = document.getElementById("userRole");
+    userRoleDisplay.textContent = userRole;
+
+    // Obtener ítems seleccionados desde sessionStorage
+    const selectedItems = JSON.parse(sessionStorage.getItem("selectedItems")) || [];
+    const orderNumber = document.getElementById("orderNumber");
+    const pickupCode = document.getElementById("pickupCode");
+
+    // Generar números aleatorios para el pedido y código de retiro
+    orderNumber.textContent = `155B${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    pickupCode.textContent = `${String.fromCharCode(65 + Math.floor(Math.random() * 26))}${String.fromCharCode(65 + Math.floor(Math.random() * 26))}${String.fromCharCode(65 + Math.floor(Math.random() * 26))}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}${Math.floor(Math.random() * 10)}`;
+
+    // Calcular total
+    let total = 0;
+    const selectedItemsDetails = [];
+    selectedItems.forEach(item => {
+      const itemData = itemsData[item.value];
+      const price = userRole === "estudiante" ? item.priceEstudiante : item.priceOtros;
+      total += price;
+      selectedItemsDetails.push({ name: itemData.name, price: price.toFixed(2) });
+    });
+
+    // Generar el código QR
+    const qrData = {
+      role: userRole,
+      items: selectedItemsDetails,
+      total: total.toFixed(2),
+      orderNumber: orderNumber.textContent,
+      pickupCode: pickupCode.textContent
+    };
+    const qrUrl = `https://cafeteria-itse.com/pedido?data=${encodeURIComponent(JSON.stringify(qrData))}`;
+    new QRCode(document.getElementById("qrcode"), {
+      text: qrUrl,
+      width: 150,
+      height: 150,
+      colorDark: "#000000",
+      colorLight: "#ffffff"
+    });
+  </script>
+</body>
+</html>

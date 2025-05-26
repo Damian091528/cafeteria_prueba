@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cafeteria</title>
+  <link rel="stylesheet" href="cafeteria.css">
+  <link rel="icon" type="image/png" href="https://www.itse.ac.pa/oirh/assets/img/logo.png" />
+</head>
+<body>
+  <header>
+    <div class="menu-icon">☰</div>
+    <div class="search-container">
+      <input type="text" placeholder="Buscar">
+      <button>🔍</button>
+    </div>
+    <div class="profile-icon">👤</div>
+  </header>
+
+  <main>
+    <h1 class="title">Cafeteria</h1>
+    <h2 id="userRole" class="role"></h2>
+
+    <section class="items" id="selectedItems">
+      <!-- Los ítems seleccionados se añadirán dinámicamente aquí -->
+    </section>
+
+    <section class="total" id="totalSection">
+      <div>
+        <p>total</p>
+        <span id="totalPrecio">$0.00</span>
+      </div>
+    </section>
+
+    <div class="read-more">
+      <button onclick="location.href='siguiente.html'">Siguiente</button>
+    </div>
+  </main>
+
+  <script src="cafeteria.js"></script>
+  <script>
+    // Datos de los ítems para mostrar imágenes y nombres
+    const itemsData = {
+      "sopa": { name: "Sopa", img: "https://i.imgur.com/N2YDf2G.jpg" },
+      "arroz-pollo": { name: "Arroz y Pollo", img: "https://i.imgur.com/UmkWEXh.jpg" },
+      "dulce": { name: "Dulce", img: "https://i.imgur.com/FIaArMD.jpg" },
+      "gelatina": { name: "Gelatina", img: "https://i.imgur.com/CfbLoDh.jpg" }
+    };
+
+    // Obtener el rol del usuario desde sessionStorage
+    const userRole = sessionStorage.getItem("userRole") || "Invitado";
+    const userRoleDisplay = document.getElementById("userRole");
+    userRoleDisplay.textContent = userRole;
+
+    // Obtener ítems seleccionados desde sessionStorage
+    const selectedItems = JSON.parse(sessionStorage.getItem("selectedItems")) || [];
+    const itemsContainer = document.getElementById("selectedItems");
+    const totalSection = document.getElementById("totalSection");
+    const totalPrecio = document.getElementById("totalPrecio");
+
+    // Mostrar ítems seleccionados
+    let total = 0;
+    selectedItems.forEach(item => {
+      const itemData = itemsData[item.value];
+      const price = userRole === "estudiante" ? item.priceEstudiante : item.priceOtros;
+      total += price;
+
+      const itemElement = document.createElement("div");
+      itemElement.classList.add("item");
+      itemElement.innerHTML = `
+        <img src="${itemData.img}" alt="${itemData.name}">
+        <div class="description">
+          <p>${itemData.name}</p>
+          <span>$${price.toFixed(2)}</span>
+        </div>
+      `;
+      itemsContainer.appendChild(itemElement);
+
+      // Añadir imágenes al total
+      const imgElement = document.createElement("img");
+      imgElement.src = itemData.img;
+      imgElement.alt = itemData.name;
+      totalSection.insertBefore(imgElement, totalSection.querySelector("div"));
+    });
+
+    // Actualizar el total
+    totalPrecio.textContent = `$${total.toFixed(2)}`;
+
+    // Si no hay ítems seleccionados, mostrar un mensaje
+    if (selectedItems.length === 0) {
+      itemsContainer.innerHTML = '<p>No has seleccionado ningún ítem.</p>';
+    }
+  </script>
+</body>
+</html>

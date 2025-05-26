@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cafetería ITSE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://www.itse.ac.pa/oirh/assets/img/logo.png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      padding: 0 30px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #000;
+      padding: 10px 0;
+    }
+
+    .menu-icon {
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      border: 1px solid #000;
+      padding: 5px 10px;
+    }
+
+    .search-container input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .user-icon {
+      font-size: 20px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      padding: 5px;
+    }
+
+    main {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .left-section {
+      max-width: 60%;
+    }
+
+    .left-section h1 {
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-family: 'Pacifico', cursive;
+      font-size: 28px;
+      color: #f26522;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .item img {
+      width: 100px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #002366;
+    }
+
+    .item span {
+      font-weight: 700;
+      color: #002366;
+      font-size: 16px;
+    }
+
+    .item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .contact-info {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+      align-items: center;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #002366;
+      font-weight: bold;
+    }
+
+    .contact-item i {
+      color: #f26522;
+      font-size: 22px;
+    }
+
+    .right-section {
+      position: relative;
+      max-width: 35%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .phone {
+      border: 3px solid #000;
+      border-radius: 35px;
+      padding: 10px;
+      width: 220px;
+      height: 460px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .phone img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .read-more {
+      margin-top: 20px;
+      background-color: #000;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 25px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .read-more.disabled {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .left-section, .right-section {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .items-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="menu-icon">☰</div>
+  <div class="right-icons">
+    <div class="search-container">
+      <input type="text" placeholder="Buscar"> 🔍
+    </div>
+    <div class="user-icon">👤</div>
+  </div>
+</header>
+
+<div class="circle"></div>
+
+<main>
+  <div class="left-section">
+    <h1>Cafeteria</h1>
+    <div class="subtitle" id="subtitle">Mediodía</div>
+    <div class="items-grid" id="itemsGrid"></div>
+
+    <div class="contact-info">
+      <div class="contact-item"><i>📞</i> 6662-9043</div>
+      <div class="contact-item"><i>📍</i> HOSPITALIDAD Y TURISMO</div>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <div class="phone">
+      <img src="https://i.imgur.com/UmkWEXh.jpg" alt="Comida">
+      <img src="https://i.imgur.com/CfbLoDh.jpg" alt="Postre">
+    </div>
+    <a href="detalle.html" aria-label="Ver detalles de los productos" onclick="saveSelectedItems()"><button class="read-more" id="readMoreButton">Leer más</button></a>
+  </div>
+</main>
+
+<script>
+  // Menús diarios (lunes a viernes)
+  const dailyMenus = {
+    1: { // Lunes
+      items: [
+        { value: "sopa-lunes", name: "Sopa de Lunes", img: "https://i.imgur.com/N2YDf2G.jpg", priceEstudiante: 1.00, priceOtros: 1.50 },
+        { value: "arroz-pollo", name: "Arroz y Pollo", img: "https://i.imgur.com/UmkWEXh.jpg", priceEstudiante: 1.50, priceOtros: 2.00 },
+        { value: "dulce", name: "Dulce", img: "https://i.imgur.com/FIaArMD.jpg", priceEstudiante: 0.75, priceOtros: 1.00 },
+        { value: "gelatina", name: "Gelatina", img: "https://i.imgur.com/CfbLoDh.jpg", priceEstudiante: 0.50, priceOtros: 0.75 }
+      ]
+    },
+    2: { // Martes
+      items: [
+        { value: "ensalada", name: "Ensalada Fresca", img: "https://i.imgur.com/N2YDf2G.jpg", priceEstudiante: 1.20, priceOtros: 1.70 },
+        { value: "pescado", name: "Pescado Frito", img: "https://i.imgur.com/UmkWEXh.jpg", priceEstudiante: 2.00, priceOtros: 2.50 },
+        { value: "tarta", name: "Tarta de Frutas", img: "https://i.imgur.com/FIaArMD.jpg", priceEstudiante: 0.80, priceOtros: 1.10 },
+        { value: "yogur", name: "Yogur", img: "https://i.imgur.com/CfbLoDh.jpg", priceEstudiante: 0.60, priceOtros: 0.85 }
+      ]
+    },
+    3: { // Miércoles
+      items: [
+        { value: "crema-verduras", name: "Crema de Verduras", img: "https://i.imgur.com/N2YDf2G.jpg", priceEstudiante: 1.10, priceOtros: 1.60 },
+        { value: "carne-asada", name: "Carne Asada", img: "https://i.imgur.com/UmkWEXh.jpg", priceEstudiante: 2.20, priceOtros: 2.70 },
+        { value: "pastel", name: "Pastel de Chocolate", img: "https://i.imgur.com/FIaArMD.jpg", priceEstudiante: 0.90, priceOtros: 1.20 },
+        { value: "fruta", name: "Fruta Fresca", img: "https://i.imgur.com/CfbLoDh.jpg", priceEstudiante: 0.50, priceOtros: 0.75 }
+      ]
+    },
+    4: { // Jueves
+      items: [
+        { value: "sopa-jueves", name: "Sopa de Jueves", img: "https://i.imgur.com/N2YDf2G.jpg", priceEstudiante: 1.00, priceOtros: 1.50 },
+        { value: "pollo-guisado", name: "Pollo Guisado", img: "https://i.imgur.com/UmkWEXh.jpg", priceEstudiante: 1.80, priceOtros: 2.30 },
+        { value: "arroz-leche", name: "Arroz con Leche", img: "https://i.imgur.com/FIaArMD.jpg", priceEstudiante: 0.70, priceOtros: 0.95 },
+        { value: "jugo", name: "Jugo Natural", img: "https://i.imgur.com/CfbLoDh.jpg", priceEstudiante: 0.50, priceOtros: 0.75 }
+      ]
+    },
+    5: { // Viernes
+      items: [
+        { value: "caldo", name: "Caldo de Pollo", img: "https://i.imgur.com/N2YDf2G.jpg", priceEstudiante: 1.00, priceOtros: 1.50 },
+        { value: "pescado-viernes", name: "Pescado al Vapor", img: "https://i.imgur.com/UmkWEXh.jpg", priceEstudiante: 2.00, priceOtros: 2.50 },
+        { value: "helado-viernes", name: "Helado de Vainilla", img: "https://i.imgur.com/FIaArMD.jpg", priceEstudiante: 0.75, priceOtros: 1.00 },
+        { value: "ensalada-frutas", name: "Ensalada de Frutas", img: "https://i.imgur.com/CfbLoDh.jpg", priceEstudiante: 0.60, priceOtros: 0.85 }
+      ]
+    }
+  };
+
+  // Obtener la fecha actual
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  const dayName = dayNames[dayOfWeek];
+  const day = today.getDate();
+  const month = monthNames[today.getMonth()];
+  const year = today.getFullYear();
+
+  // Actualizar el subtítulo con la fecha
+  const subtitle = document.getElementById("subtitle");
+  subtitle.textContent = `${dayName}, ${day} de ${month} de ${year}`;
+
+  // Cargar el menú del día (solo lunes a viernes)
+  const itemsGrid = document.getElementById("itemsGrid");
+  const readMoreButton = document.getElementById("readMoreButton");
+
+  if (dayOfWeek >= 1 && dayOfWeek <= 5) { // Lunes a Viernes
+    const menu = dailyMenus[dayOfWeek];
+    menu.items.forEach(item => {
+      const itemElement = document.createElement("div");
+      itemElement.classList.add("item");
+      itemElement.innerHTML = `
+        <input type="checkbox" name="item" value="${item.value}" data-price-estudiante="${item.priceEstudiante}" data-price-otros="${item.priceOtros}">
+        <img src="${item.img}" alt="${item.name}">
+        <span>${item.name.toUpperCase()}</span>
+      `;
+      itemsGrid.appendChild(itemElement);
+    });
+  } else {
+    // Mostrar mensaje si es sábado o domingo
+    itemsGrid.innerHTML = '<p>Lo sentimos, no se pueden realizar pedidos los sábados ni domingos.</p>';
+    readMoreButton.classList.add("disabled"); // Ocultar el botón "Leer más"
+  }
+
+  // Guardar ítems seleccionados en sessionStorage
+  function saveSelectedItems() {
+    const items = document.querySelectorAll('input[name="item"]:checked');
+    const selectedItems = Array.from(items).map(item => ({
+      value: item.value,
+      priceEstudiante: parseFloat(item.dataset.priceEstudiante),
+      priceOtros: parseFloat(item.dataset.priceOtros)
+    }));
+    sessionStorage.setItem("selectedItems", JSON.stringify(selectedItems));
+  }
+</script>
+</body>
+</html>

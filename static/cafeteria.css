@@ -1,0 +1,121 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: #000;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+    padding: 10px 20px;
+  }
+  
+  .menu-icon, .profile-icon {
+    font-size: 24px;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-container input {
+    padding: 5px;
+    border: 1px solid #000;
+  }
+  
+  main {
+    padding: 40px 80px;
+  }
+  
+  .title {
+    font-size: 40px;
+    font-weight: bold;
+  }
+  
+  .role {
+    color: #f2702c;
+    font-family: 'Pacifico', cursive;
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-size: 24px;
+  }
+  
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .item {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 30px;
+    padding: 10px 20px;
+    max-width: 400px;
+  }
+  
+  .item img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+  }
+  
+  .description p {
+    font-size: 22px;
+    margin: 0;
+  }
+  
+  .description span {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .total {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 30px;
+    max-width: 400px;
+    padding: 20px;
+    gap: 10px;
+  }
+  
+  .total img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .total p {
+    font-size: 26px;
+    margin: 0;
+  }
+  
+  .total span {
+    font-size: 18px;
+  }
+  
+  .read-more {
+    margin-top: 50px;
+    text-align: right;
+  }
+  
+  .read-more button {
+    padding: 12px 24px;
+    font-weight: bold;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+  }
+  

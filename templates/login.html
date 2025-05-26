@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Cafetería ITSE</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Agregar el favicon -->
+  <link rel="icon" type="image/png" href="https://www.itse.ac.pa/oirh/assets/img/logo.png" />
+  <style>
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #fff;
+      appearance: auto; /* Asegura que el estilo nativo del navegador se aplique */
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #f26522;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-section">
+      <img src="cafeteria-logo.png" alt="Logo de Cafetería ITSE" class="logo" />
+      <img src="https://marketerplus.pl/wp-content/uploads/2022/03/linki-w-postach-w-mediach-spolecznosciowych.jpg" alt="Ilustración de inicio de sesión" class="illustration" />
+    </div>
+
+    <div class="right-section">
+      <h1>¡Bienvenido a el menu del ITSE!</h1>
+      <form id="loginForm">
+        <label for="emailInput">Correo Institucional</label>
+        <input type="email" id="emailInput" placeholder="usuario@itse.ac.pa" required />
+        <label for="roleSelect">Rol Institucional</label>
+        <select id="roleSelect" required>
+          <option value="" disabled selected>Selecciona tu rol</option>
+          <option value="estudiante">Estudiante</option>
+          <option value="profesor">Profesor</option>
+          <option value="trabajador">Trabajador</option>
+          <option value="administracion">Administración</option>
+        </select>
+        <div class="password-container">
+          <label for="passwordInput">Contraseña</label>
+          <input type="password" id="passwordInput" placeholder="Contraseña" required />
+          <span class="eye-icon" onclick="togglePassword()">👁️</span>
+        </div>
+        <button type="submit">Iniciar sesión</button>
+        <div class="links">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+          <p>¿No tienes una cuenta? <a href="#">Regístrate</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("passwordInput");
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("emailInput").value;
+      const role = document.getElementById("roleSelect").value;
+      const password = document.getElementById("passwordInput").value;
+      const button = this.querySelector("button");
+
+      button.textContent = "Cargando...";
+      button.disabled = true;
+
+      // Validar formato del email
+      if (!email.toLowerCase().endsWith("@itse.ac.pa")) {
+        alert("Por favor, usa un correo institucional válido (@itse.ac.pa).");
+        button.textContent = "Iniciar sesión";
+        button.disabled = false;
+        return;
+      }
+
+      // Validar que se haya seleccionado un rol
+      if (!role) {
+        alert("Por favor, selecciona tu rol institucional.");
+        button.textContent = "Iniciar sesión";
+        button.disabled = false;
+        return;
+      }
+
+      // Simulación de validación
+      setTimeout(() => {
+        if (password === "cafeteria123") {
+          sessionStorage.setItem("userRole", role);
+          sessionStorage.setItem("userEmail", email);
+          window.location.href = "welcome.html";
+        } else {
+          alert("Contraseña incorrecta.");
+          button.textContent = "Iniciar sesión";
+          button.disabled = false;
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

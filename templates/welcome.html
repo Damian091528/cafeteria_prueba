@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido - Cafetería ITSE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://www.itse.ac.pa/oirh/assets/img/logo.png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      padding: 20px;
+    }
+
+    /* Encabezado */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #000;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      border: 1px solid #000;
+      padding: 5px 10px;
+    }
+
+    .search-container input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+      margin-right: 5px;
+      background: transparent;
+    }
+
+    .search-icon {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .user-icon {
+      font-size: 18px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      padding: 6px;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #ff4500;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #cc3700;
+    }
+
+    /* Contenido principal */
+    main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .text-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .text-section h1 {
+      font-size: 42px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .text-section em {
+      font-size: 20px;
+      font-style: italic;
+      display: block;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .text-section p {
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .text-section a {
+      margin-top: 20px;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .text-section button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .text-section button:hover {
+      background-color: #333;
+    }
+
+    .phone-mockup {
+      flex: 1;
+      min-width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-mockup img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .text-section h1 {
+        font-size: 32px;
+      }
+
+      .phone-mockup {
+        margin-top: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Encabezado -->
+  <header>
+    <div class="menu-icon" title="Menú principal">☰</div>
+    <div class="right-icons">
+      <div class="search-container" role="search">
+        <input type="text" id="searchInput" placeholder="Buscar en el menú" aria-label="Buscar" />
+        <span class="search-icon" onclick="search()" title="Buscar">🔍</span>
+      </div>
+      <div class="user-icon" title="Usuario actual">👤</div>
+      <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- Círculo decorativo -->
+  <div class="circle" aria-hidden="true"></div>
+
+  <!-- Contenido principal -->
+  <main>
+    <div class="text-section">
+      <h1>¡Bienvenido!</h1>
+      <em id="welcomeMessage">¡La espera ha terminado!</em>
+      <p>Estamos encantados de tenerte aquí, <span id="userEmail">usuario</span>. Prepárate para un viaje delicioso, porque hemos reunido una increíble variedad de comida para todos los gustos.</p>
+      <p>Desde platos clásicos hasta opciones innovadoras, aquí encontrarás exactamente lo que se te antoja.</p>
+      <a href="menu.html" aria-label="Leer más sobre el menú">
+        <button>Leer más</button>
+      </a>
+    </div>
+
+    <div class="phone-mockup">
+      <img src="celular.png" alt="Mockup de celular con la app de la Cafetería ITSE">
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script>
+    // Obtener datos del usuario desde sessionStorage
+    const email = sessionStorage.getItem("userEmail") || "usuario";
+    const role = sessionStorage.getItem("userRole") || "estudiante";
+
+    // Personalizar mensaje de bienvenida
+    document.getElementById("userEmail").textContent = email;
+
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    switch (role) {
+      case "profesor":
+        welcomeMessage.textContent = "¡La espera ha terminado, Profesor!";
+        break;
+      case "trabajador":
+        welcomeMessage.textContent = "¡La espera ha terminado, Trabajador!";
+        break;
+      case "administracion":
+        welcomeMessage.textContent = "¡La espera ha terminado, Administrador!";
+        break;
+      default:
+        welcomeMessage.textContent = "¡La espera ha terminado, Estudiante!";
+    }
+
+    // Función para cerrar sesión
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    // Función de búsqueda
+    function search() {
+      const searchTerm = document.getElementById("searchInput").value.trim();
+      if (searchTerm === "") {
+        alert("Por favor, ingresa un término de búsqueda.");
+      } else {
+        alert(`Buscando: ${searchTerm}`);
+        // Aquí puedes enlazar a una página de resultados o aplicar un filtro
+      }
+    }
+  </script>
+</body>
+</html>
