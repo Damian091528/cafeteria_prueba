@@ -34,7 +34,7 @@ with app.app_context():
 @app.route('/')
 def index():
     menu_items = Menu.query.all()
-    return render_template('prueba_de_cafeteria_2.html', menu=menu_items)
+    return render_templates('prueba_de_cafeteria_2.html', menu=menu_items)
 
 if __name__ == '__main__':
     app.run(debug=True)
